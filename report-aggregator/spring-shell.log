@@ -1,0 +1,3 @@
+1528114770988:help
+1528114851853:transform
+1528127301655:transform --xml-file /home/simon/git/vogella/zak-code-analysis/ch.zakag.zak3.rcp.invoice/target/spotbugsXml.xml --output /home/simon/Desktop
