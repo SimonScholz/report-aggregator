@@ -67,25 +67,49 @@ public class SpotBugsService {
 		trans.transform();
 	}
 
-	public void generateOriginalAll(File xmlFile, File outputDir)
-			throws FileNotFoundException, IOException, SaxonApiException {
-		InputStream xsl = ResourceUtils.getURL("classpath:spotbugs/orig/color.xsl").openStream();
-		xsltService.runXslt(xsl, xmlFile, new File(outputDir, "color.html"));
+	public void generateOriginalAll(File xmlFile, File outputDir) {
+		InputStream xsl;
+		try {
+			xsl = ResourceUtils.getURL("classpath:spotbugs/orig/color.xsl").openStream();
+			xsltService.runXslt(xsl, xmlFile, new File(outputDir, "color.html"));
+		} catch (IOException | SaxonApiException e) {
+			e.printStackTrace();
+		}
 
-		xsl = ResourceUtils.getURL("classpath:spotbugs/orig/default.xsl").openStream();
-		xsltService.runXslt(xsl, xmlFile, new File(outputDir, "default.html"));
+		try {
+			xsl = ResourceUtils.getURL("classpath:spotbugs/orig/default.xsl").openStream();
+			xsltService.runXslt(xsl, xmlFile, new File(outputDir, "default.html"));
+		} catch (IOException | SaxonApiException e) {
+			e.printStackTrace();
+		}
 
-		xsl = ResourceUtils.getURL("classpath:spotbugs/orig/fancy-hist.xsl").openStream();
-		xsltService.runXslt(xsl, xmlFile, new File(outputDir, "fancy-hist.html"));
+		try {
+			xsl = ResourceUtils.getURL("classpath:spotbugs/orig/fancy-hist.xsl").openStream();
+			xsltService.runXslt(xsl, xmlFile, new File(outputDir, "fancy-hist.html"));
+		} catch (IOException | SaxonApiException e) {
+			e.printStackTrace();
+		}
 
-		xsl = ResourceUtils.getURL("classpath:spotbugs/orig/fancy.xsl").openStream();
-		xsltService.runXslt(xsl, xmlFile, new File(outputDir, "fancy.html"));
+		try {
+			xsl = ResourceUtils.getURL("classpath:spotbugs/orig/fancy.xsl").openStream();
+			xsltService.runXslt(xsl, xmlFile, new File(outputDir, "fancy.html"));
+		} catch (IOException | SaxonApiException e) {
+			e.printStackTrace();
+		}
 
-		xsl = ResourceUtils.getURL("classpath:spotbugs/orig/plain.xsl").openStream();
-		xsltService.runXslt(xsl, xmlFile, new File(outputDir, "plain.html"));
+		try {
+			xsl = ResourceUtils.getURL("classpath:spotbugs/orig/plain.xsl").openStream();
+			xsltService.runXslt(xsl, xmlFile, new File(outputDir, "plain.html"));
+		} catch (IOException | SaxonApiException e) {
+			e.printStackTrace();
+		}
 
-		xsl = ResourceUtils.getURL("classpath:spotbugs/orig/summary.xsl").openStream();
-		xsltService.runXslt(xsl, xmlFile, new File(outputDir, "summary.html"));
+		try {
+			xsl = ResourceUtils.getURL("classpath:spotbugs/orig/summary.xsl").openStream();
+			xsltService.runXslt(xsl, xmlFile, new File(outputDir, "summary.html"));
+		} catch (IOException | SaxonApiException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void findDirectories(File rootDir, List<File> list, int level) {
