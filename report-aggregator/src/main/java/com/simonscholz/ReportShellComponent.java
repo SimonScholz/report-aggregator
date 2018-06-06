@@ -46,6 +46,14 @@ public class ReportShellComponent {
 		consoleService.write("Wrote merged xml to %s", outputDir);
 	}
 
+	@ShellMethod("Generate all kinds of original SpotBugs html files")
+	public void generateOriginalAll(@ShellOption(valueProvider = FileValueProvider.class) File xmlFile,
+			@ShellOption(valueProvider = FileValueProvider.class) File outputDir)
+					throws SaxonApiException, IOException {
+		spotBugsService.generateOriginalAll(xmlFile, outputDir);
+		consoleService.write("Wrote all original xml to %s", outputDir);
+	}
+
 	@ShellMethod("List SpotBugs files")
 	public void listSpotBugsFiles(@ShellOption(valueProvider = FileValueProvider.class) File rootDir,
 			@ShellOption(defaultValue = "2") int level) throws SaxonApiException, IOException {

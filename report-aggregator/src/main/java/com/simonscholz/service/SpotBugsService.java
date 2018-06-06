@@ -28,6 +28,12 @@ import net.sf.saxon.s9api.XsltTransformer;
 @Service
 public class SpotBugsService {
 
+	private XsltService xsltService;
+
+	public SpotBugsService(XsltService xsltService) {
+		this.xsltService = xsltService;
+	}
+
 	public List<File> getSpotBugsFiles(File rootDir, int level) {
 		List<File> list = new ArrayList<>(50);
 		findDirectories(rootDir, list, level);
@@ -36,16 +42,6 @@ public class SpotBugsService {
 				.collect(Collectors.toList());
 
 		return spotBugsFiles;
-	}
-
-	private void findDirectories(File rootDir, List<File> list, int level) {
-		File[] directories = rootDir.listFiles(File::isDirectory);
-		list.addAll(Arrays.asList(directories));
-		if (level > 0) {
-			for (File dir : directories) {
-				findDirectories(dir, list, --level);
-			}
-		}
 	}
 
 	public void mergeSpotBugsFiles(File rootDir, int level, File outputDir)
@@ -69,6 +65,37 @@ public class SpotBugsService {
 		trans.setInitialTemplate(new QName("test"));
 		trans.setDestination(out);
 		trans.transform();
+	}
+
+	public void generateOriginalAll(File xmlFile, File outputDir)
+			throws FileNotFoundException, IOException, SaxonApiException {
+		InputStream xsl = ResourceUtils.getURL("classpath:spotbugs/orig/color.xsl").openStream();
+		xsltService.runXslt(xsl, xmlFile, new File(outputDir, "color.html"));
+
+		xsl = ResourceUtils.getURL("classpath:spotbugs/orig/default.xsl").openStream();
+		xsltService.runXslt(xsl, xmlFile, new File(outputDir, "default.html"));
+
+		xsl = ResourceUtils.getURL("classpath:spotbugs/orig/fancy-hist.xsl").openStream();
+		xsltService.runXslt(xsl, xmlFile, new File(outputDir, "fancy-hist.html"));
+
+		xsl = ResourceUtils.getURL("classpath:spotbugs/orig/fancy.xsl").openStream();
+		xsltService.runXslt(xsl, xmlFile, new File(outputDir, "fancy.html"));
+
+		xsl = ResourceUtils.getURL("classpath:spotbugs/orig/plain.xsl").openStream();
+		xsltService.runXslt(xsl, xmlFile, new File(outputDir, "plain.html"));
+
+		xsl = ResourceUtils.getURL("classpath:spotbugs/orig/summary.xsl").openStream();
+		xsltService.runXslt(xsl, xmlFile, new File(outputDir, "summary.html"));
+	}
+
+	private void findDirectories(File rootDir, List<File> list, int level) {
+		File[] directories = rootDir.listFiles(File::isDirectory);
+		list.addAll(Arrays.asList(directories));
+		if (level > 0) {
+			for (File dir : directories) {
+				findDirectories(dir, list, --level);
+			}
+		}
 	}
 
 	private List<XdmNode> createXdmNodes(List<File> spotBugsFiles, DocumentBuilder documentBuilder) {
