@@ -10,8 +10,12 @@
 			<head>
 				<title>Analysis Summary</title>
 				<style type="text/css">
+					h1{
+					text-align: center;
+					}
 					.tablerow0 {
-					background: #EEEEEE;
+					background:
+					#EEEEEE;
 					}
 
 					.tablerow1 {
@@ -19,7 +23,8 @@
 					}
 
 					.detailrow0 {
-					background: #EEEEEE;
+					background:
+					#EEEEEE;
 					}
 
 					.detailrow1 {
@@ -27,12 +32,14 @@
 					}
 
 					.tableheader {
-					background: #b9b9fe;
+					background:
+					#b9b9fe;
 					font-size: larger;
 					}
 
 					.tablerow0:hover, .tablerow1:hover {
-					background: #aaffaa;
+					background:
+					#aaffaa;
 					}
 
 					.priority-1 {
@@ -44,16 +51,33 @@
 					font-weight: bold;
 					}
 					.priority-3 {
-					color: green;
+					color:
+					green;
 					font-weight: bold;
 					}
 					.priority-4 {
 					color: blue;
-					font-weight: bold;
+					font-weight:
+					bold;
 					}
 				</style>
 			</head>
 			<body>
+				<h1>Analysis Summary</h1>
+				<h2>All Projects</h2>
+				<p>
+					<xsl:value-of
+						select="sum(//FindBugsSummary/@total_size)" />
+					lines of code analyzed,
+					in
+					<xsl:value-of
+						select="sum(//FindBugsSummary/@total_classes)" />
+					classes,
+					in
+					<xsl:value-of
+						select="sum(//FindBugsSummary/@num_packages)" />
+					packages.
+				</p>
 				<xsl:apply-templates />
 			</body>
 		</html>
@@ -63,7 +87,6 @@
 		<xsl:choose>
 			<xsl:when test="count(BugInstance) > 0">
 				<xsl:apply-templates select="Project" />
-				<h3>Metrics</h3>
 				<xsl:apply-templates select="FindBugsSummary" />
 			</xsl:when>
 			<xsl:otherwise>
