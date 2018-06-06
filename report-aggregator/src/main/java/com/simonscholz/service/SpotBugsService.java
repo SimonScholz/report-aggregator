@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,29 +28,40 @@ import net.sf.saxon.s9api.XsltTransformer;
 @Service
 public class SpotBugsService {
 
-	public List<File> getSpotBugsFiles(File rootDir) {
+	public List<File> getSpotBugsFiles(File rootDir, int level) {
+		List<File> list = new ArrayList<>(50);
+		findDirectories(rootDir, list, level);
 
-		File[] directories = rootDir.listFiles(File::isDirectory);
-		List<File> spotBugsFiles = Arrays.asList(directories).stream().map(f -> {
-			return new File(f, "target/spotbugsXml.xml");
-		}).filter(File::exists).collect(Collectors.toList());
+		List<File> spotBugsFiles = list.stream().map(f -> new File(f, "target/spotbugsXml.xml")).filter(File::exists)
+				.collect(Collectors.toList());
 
 		return spotBugsFiles;
 	}
-	
-	public void mergeSpotBugsFiles(File rootDir, File outputDir) throws FileNotFoundException, IOException, SaxonApiException {
-		List<File> spotBugsFiles = getSpotBugsFiles(rootDir);
-		
+
+	private void findDirectories(File rootDir, List<File> list, int level) {
+		File[] directories = rootDir.listFiles(File::isDirectory);
+		list.addAll(Arrays.asList(directories));
+		if (level > 0) {
+			for (File dir : directories) {
+				findDirectories(dir, list, --level);
+			}
+		}
+	}
+
+	public void mergeSpotBugsFiles(File rootDir, int level, File outputDir)
+			throws FileNotFoundException, IOException, SaxonApiException {
+		List<File> spotBugsFiles = getSpotBugsFiles(rootDir, level);
+
 		Processor proc = new Processor(false);
 		XsltCompiler comp = proc.newXsltCompiler();
 
-		InputStream	xsl = ResourceUtils.getURL("classpath:spotbugs/merge2.xsl").openStream();
+		InputStream xsl = ResourceUtils.getURL("classpath:spotbugs/merge.xsl").openStream();
 		XsltExecutable exp = comp.compile(new StreamSource(xsl));
 		Serializer out = proc.newSerializer(new File(outputDir, "merge.xml"));
 		out.setOutputProperty(Serializer.Property.METHOD, "xml");
 		out.setOutputProperty(Serializer.Property.INDENT, "yes");
 		XsltTransformer trans = exp.load();
-		
+
 		List<XdmNode> sources = createXdmNodes(spotBugsFiles, proc.newDocumentBuilder());
 		QName xmlFiles = new QName("xmlFiles");
 		XdmValue filesXdm = XdmValue.makeSequence(sources);

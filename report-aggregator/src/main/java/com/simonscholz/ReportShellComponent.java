@@ -39,16 +39,17 @@ public class ReportShellComponent {
 
 	@ShellMethod("Merge SpotBugs files")
 	public void mergeSpotBugs(@ShellOption(valueProvider = FileValueProvider.class) File rootDir,
+			@ShellOption(defaultValue = "2") int level,
 			@ShellOption(valueProvider = FileValueProvider.class) File outputDir)
 			throws SaxonApiException, IOException {
-		spotBugsService.mergeSpotBugsFiles(rootDir, outputDir);
+		spotBugsService.mergeSpotBugsFiles(rootDir, level, outputDir);
 		consoleService.write("Wrote merged xml to %s", outputDir);
 	}
 
 	@ShellMethod("List SpotBugs files")
-	public void listSpotBugsFiles(@ShellOption(valueProvider = FileValueProvider.class) File rootFolder)
-			throws SaxonApiException, IOException {
-		List<File> spotBugsFiles = spotBugsService.getSpotBugsFiles(rootFolder);
+	public void listSpotBugsFiles(@ShellOption(valueProvider = FileValueProvider.class) File rootDir,
+			@ShellOption(defaultValue = "2") int level) throws SaxonApiException, IOException {
+		List<File> spotBugsFiles = spotBugsService.getSpotBugsFiles(rootDir, level);
 
 		spotBugsFiles.forEach(f -> consoleService.write(f.toString()));
 
