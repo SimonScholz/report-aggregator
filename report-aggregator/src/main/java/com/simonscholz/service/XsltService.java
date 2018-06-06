@@ -21,19 +21,19 @@ import net.sf.saxon.s9api.XsltTransformer;
 @Service
 public class XsltService {
 
-	public void runXslt(String xslFile, File xmlFile, File outputDir) throws SaxonApiException, IOException {
+	public void runXslt(String xslFile, File xmlFile, File outputFile) throws SaxonApiException, IOException {
 		Processor proc = new Processor(false);
 		XsltCompiler comp = proc.newXsltCompiler();
 
 		InputStream xsl = null;
-		if ("summary".equals(xslFile)) {
-			xsl = ResourceUtils.getURL("classpath:spotbugs/html/summary.xsl").openStream();
+		if ("default".equals(xslFile)) {
+			xsl = ResourceUtils.getURL("classpath:spotbugs/html-summary.xsl").openStream();
 		} else {
 			xsl = new FileInputStream(xslFile);
 		}
 		XsltExecutable exp = comp.compile(new StreamSource(xsl));
 		XdmNode source = proc.newDocumentBuilder().build(new StreamSource(xmlFile));
-		Serializer out = proc.newSerializer(new File(outputDir, "report.html"));
+		Serializer out = proc.newSerializer(outputFile);
 		out.setOutputProperty(Serializer.Property.METHOD, "html");
 		out.setOutputProperty(Serializer.Property.INDENT, "yes");
 		XsltTransformer trans = exp.load();

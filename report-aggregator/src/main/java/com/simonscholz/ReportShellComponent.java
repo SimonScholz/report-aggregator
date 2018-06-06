@@ -30,7 +30,7 @@ public class ReportShellComponent {
 	}
 
 	@ShellMethod("Transform xml to html")
-	public void transform(@ShellOption(defaultValue = "summary") String xslFile,
+	public void transform(@ShellOption(defaultValue = "default") String xslFile,
 			@ShellOption(valueProvider = FileValueProvider.class) File xmlFile,
 			@ShellOption(valueProvider = FileValueProvider.class) File output) throws SaxonApiException, IOException {
 		xsltService.runXslt(xslFile, xmlFile, output);
