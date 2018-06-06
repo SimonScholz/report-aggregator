@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 import javax.xml.transform.stream.StreamSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
@@ -27,6 +29,8 @@ import net.sf.saxon.s9api.XsltTransformer;
 
 @Service
 public class SpotBugsService {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(SpotBugsService.class);
 
 	private XsltService xsltService;
 
@@ -73,42 +77,42 @@ public class SpotBugsService {
 			xsl = ResourceUtils.getURL("classpath:spotbugs/orig/color.xsl").openStream();
 			xsltService.runXslt(xsl, xmlFile, new File(outputDir, "color.html"));
 		} catch (IOException | SaxonApiException e) {
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 
 		try {
 			xsl = ResourceUtils.getURL("classpath:spotbugs/orig/default.xsl").openStream();
 			xsltService.runXslt(xsl, xmlFile, new File(outputDir, "default.html"));
 		} catch (IOException | SaxonApiException e) {
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 
 		try {
 			xsl = ResourceUtils.getURL("classpath:spotbugs/orig/fancy-hist.xsl").openStream();
 			xsltService.runXslt(xsl, xmlFile, new File(outputDir, "fancy-hist.html"));
 		} catch (IOException | SaxonApiException e) {
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 
 		try {
 			xsl = ResourceUtils.getURL("classpath:spotbugs/orig/fancy.xsl").openStream();
 			xsltService.runXslt(xsl, xmlFile, new File(outputDir, "fancy.html"));
 		} catch (IOException | SaxonApiException e) {
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 
 		try {
 			xsl = ResourceUtils.getURL("classpath:spotbugs/orig/plain.xsl").openStream();
 			xsltService.runXslt(xsl, xmlFile, new File(outputDir, "plain.html"));
 		} catch (IOException | SaxonApiException e) {
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 
 		try {
 			xsl = ResourceUtils.getURL("classpath:spotbugs/orig/summary.xsl").openStream();
 			xsltService.runXslt(xsl, xmlFile, new File(outputDir, "summary.html"));
 		} catch (IOException | SaxonApiException e) {
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 	}
 
@@ -127,7 +131,7 @@ public class SpotBugsService {
 			try {
 				return documentBuilder.build(t);
 			} catch (SaxonApiException e) {
-				e.printStackTrace();
+				LOG.error(e.getMessage(), e);
 			}
 			return null;
 		}).collect(Collectors.toList());
