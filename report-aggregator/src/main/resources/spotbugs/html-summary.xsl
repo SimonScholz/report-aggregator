@@ -60,6 +60,9 @@
 					font-weight:
 					bold;
 					}
+					.help {
+					cursor: help;
+					}
 				</style>
 			</head>
 			<body>
@@ -78,6 +81,107 @@
 						select="sum(//FindBugsSummary/@num_packages)" />
 					packages.
 				</p>
+				<xsl:variable name="kloc"
+					select="sum(//FindBugsSummary/@total_size) div 1000.0" />
+				<xsl:variable name="format" select="'#######0.00'" />
+
+				<table width="500" cellpadding="5" cellspacing="2">
+					<tr class="tableheader">
+						<th align="left">Metric</th>
+						<th align="right">Total</th>
+						<th class="help" align="right"
+							title="(* Defects per Thousand lines of non-commenting source statements)">Density*</th>
+					</tr>
+					<tr class="tablerow0">
+						<td>High Priority Warnings</td>
+						<td align="right">
+							<xsl:value-of
+								select="sum(//FindBugsSummary/@priority_1)" />
+						</td>
+						<td align="right">
+							<xsl:choose>
+								<xsl:when
+									test="number($kloc) &gt; 0.0 and number(sum(//FindBugsSummary/@priority_1)) &gt; 0.0">
+									<xsl:value-of
+										select="format-number(sum(//FindBugsSummary/@priority_1) div $kloc, $format)" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="format-number(0.0, $format)" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</td>
+					</tr>
+					<tr class="tablerow1">
+						<td>Medium Priority Warnings</td>
+						<td align="right">
+							<xsl:value-of
+								select="sum(//FindBugsSummary/@priority_2)" />
+						</td>
+						<td align="right">
+							<xsl:choose>
+								<xsl:when
+									test="number($kloc) &gt; 0.0 and number(sum(//FindBugsSummary/@priority_2)) &gt; 0.0">
+									<xsl:value-of
+										select="format-number(sum(//FindBugsSummary/@priority_2) div $kloc, $format)" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="format-number(0.0, $format)" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</td>
+					</tr>
+
+					<tr class="tablerow1">
+						<td>Low Priority Warnings</td>
+						<td align="right">
+							<xsl:value-of
+								select="sum(//FindBugsSummary/@priority_3)" />
+						</td>
+						<td align="right">
+							<xsl:choose>
+								<xsl:when
+									test="number($kloc) &gt; 0.0 and number(sum(//FindBugsSummary/@priority_3)) &gt; 0.0">
+									<xsl:value-of
+										select="format-number(sum(//FindBugsSummary/@priority_3) div $kloc, $format)" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="format-number(0.0, $format)" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</td>
+					</tr>
+
+					<tr class="tablerow0">
+						<td>
+							<b>Total Warnings</b>
+						</td>
+						<td align="right">
+							<b>
+								<xsl:value-of
+									select="sum(//FindBugsSummary/@total_bugs)" />
+							</b>
+						</td>
+						<xsl:choose>
+							<xsl:when test="number($kloc) &gt; 0.0">
+								<td align="right">
+									<b>
+										<xsl:value-of
+											select="format-number(sum(//FindBugsSummary/@total_bugs) div $kloc, $format)" />
+									</b>
+								</td>
+							</xsl:when>
+							<xsl:otherwise>
+								<td align="right">
+									<b>
+										<xsl:value-of
+											select="format-number(0.0, $format)" />
+									</b>
+								</td>
+							</xsl:otherwise>
+						</xsl:choose>
+					</tr>
+				</table>
+				<br />
 				<xsl:apply-templates />
 			</body>
 		</html>
@@ -118,7 +222,8 @@
 			<tr class="tableheader">
 				<th align="left">Metric</th>
 				<th align="right">Total</th>
-				<th align="right">Density*</th>
+				<th class="help" align="right"
+					title="(* Defects per Thousand lines of non-commenting source statements)">Density*</th>
 			</tr>
 			<tr class="tablerow0">
 				<td>High Priority Warnings</td>
@@ -157,34 +262,26 @@
 				</td>
 			</tr>
 
-			<xsl:choose>
-				<xsl:when test="@priority_3">
-					<tr class="tablerow1">
-						<td>Low Priority Warnings</td>
-						<td align="right">
-							<xsl:value-of select="@priority_3" />
-						</td>
-						<td align="right">
-							<xsl:choose>
-								<xsl:when
-									test="number($kloc) &gt; 0.0 and number(@priority_3) &gt; 0.0">
-									<xsl:value-of
-										select="format-number(@priority_3 div $kloc, $format)" />
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="format-number(0.0, $format)" />
-								</xsl:otherwise>
-							</xsl:choose>
-						</td>
-					</tr>
-					<xsl:variable name="totalClass" select="tablerow0" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:variable name="totalClass" select="tablerow1" />
-				</xsl:otherwise>
-			</xsl:choose>
+			<tr class="tablerow1">
+				<td>Low Priority Warnings</td>
+				<td align="right">
+					<xsl:value-of select="@priority_3" />
+				</td>
+				<td align="right">
+					<xsl:choose>
+						<xsl:when
+							test="number($kloc) &gt; 0.0 and number(@priority_3) &gt; 0.0">
+							<xsl:value-of
+								select="format-number(@priority_3 div $kloc, $format)" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="format-number(0.0, $format)" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</td>
+			</tr>
 
-			<tr class="$totalClass">
+			<tr class="tablerow0">
 				<td>
 					<b>Total Warnings</b>
 				</td>
@@ -212,14 +309,7 @@
 				</xsl:choose>
 			</tr>
 		</table>
-		<p>
-			<i>(* Defects per Thousand lines of non-commenting source statements)</i>
-		</p>
-		<p>
-			<br />
-			<br />
-		</p>
-
+		<br />
 	</xsl:template>
 
 
