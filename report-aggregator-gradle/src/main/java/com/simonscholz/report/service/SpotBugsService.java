@@ -67,7 +67,7 @@ public class SpotBugsService {
 		File spotBugsMergedXmlFile = new File(outputDir, "SpotBugsMerged.xml");
 
 		// only generate SpotBugsMerged.xml file, if it does not already exist
-		if (spotBugsMergedXmlFile.exists()) {
+		if (!spotBugsMergedXmlFile.exists()) {
 			mergeSpotBugsFiles(rootDir, level, outputDir);
 		}
 
