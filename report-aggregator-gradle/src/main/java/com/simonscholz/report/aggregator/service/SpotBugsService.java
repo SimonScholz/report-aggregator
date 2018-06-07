@@ -1,4 +1,4 @@
-package com.vogella.gradleplugin.service;
+package com.simonscholz.report.aggregator.service;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package com.vogella.gradleplugin;
+package com.simonscholz.report.aggregator;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;

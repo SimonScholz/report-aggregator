@@ -1,4 +1,4 @@
-package com.vogella.gradleplugin;
+package com.simonscholz.report.aggregator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.TaskAction;
 
-import com.vogella.gradleplugin.service.SpotBugsService;
+import com.simonscholz.report.aggregator.service.SpotBugsService;
 
 import net.sf.saxon.s9api.SaxonApiException;
 

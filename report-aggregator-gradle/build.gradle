@@ -22,7 +22,7 @@ gradlePlugin {
     plugins {
         simplePlugin {
             id = 'com.simonscholz.code-analysis-plugin'
-            implementationClass = 'com.simonscholz.CodeAnalysisPlugin'
+            implementationClass = 'com.simonscholz.report.aggregator.AnalysisPlugin'
         }
     }
 }
