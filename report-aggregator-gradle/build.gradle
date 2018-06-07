@@ -1,0 +1,40 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+group = 'com.simonscholz'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+	// We want to merge and parse SpotBugs xml files with XSLT
+	compile('net.sf.saxon:Saxon-HE:9.8.0-12')
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+}
+
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = 'com.simonscholz.code-analysis-plugin'
+            implementationClass = 'com.simonscholz.CodeAnalysisPlugin'
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '4.7'
+}
