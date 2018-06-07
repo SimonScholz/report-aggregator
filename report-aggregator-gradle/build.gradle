@@ -22,8 +22,8 @@ dependencies {
 gradlePlugin {
     plugins {
         simplePlugin {
-            id = 'com.simonscholz.report.aggregator'
-            implementationClass = 'com.simonscholz.report.aggregator.AnalysisPlugin'
+            id = 'com.simonscholz.reports'
+            implementationClass = 'com.simonscholz.report.AnalysisPlugin'
         }
     }
 }

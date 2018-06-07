@@ -1,4 +1,4 @@
-package com.simonscholz.report.aggregator;
+package com.simonscholz.report;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;

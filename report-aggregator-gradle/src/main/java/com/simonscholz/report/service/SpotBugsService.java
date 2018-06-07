@@ -1,4 +1,4 @@
-package com.simonscholz.report.aggregator.service;
+package com.simonscholz.report.service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
