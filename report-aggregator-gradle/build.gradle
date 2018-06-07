@@ -1,6 +1,7 @@
 plugins {
     id 'java-gradle-plugin'
     id 'maven-publish'
+    id 'com.gradle.plugin-publish' version '0.9.10' 
 }
 
 group = 'com.simonscholz'
@@ -23,6 +24,21 @@ gradlePlugin {
         simplePlugin {
             id = 'com.simonscholz.report.aggregator'
             implementationClass = 'com.simonscholz.report.aggregator.AnalysisPlugin'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/SimonScholz/report-aggregator'
+    vcsUrl = 'https://github.com/SimonScholz/report-aggregator'
+
+    plugins {
+        analysisPlugin {
+            id = 'com.simonscholz.reports'
+            displayName = 'Report Aggregator Plugin'
+            description = 'Plugin which aggregates SpotBugs xml files into one and generates HTML from it'
+            tags = ['SpotBugs','XML','XSL','Code Analysis']
+            version = '0.0.1-SNAPSHOT'
         }
     }
 }
