@@ -57,7 +57,7 @@ public class SpotBugsService {
 		QName xmlFiles = new QName("xmlFiles");
 		XdmValue filesXdm = XdmValue.makeSequence(sources);
 		trans.setParameter(xmlFiles, filesXdm);
-		trans.setInitialTemplate(new QName("test"));
+		trans.setInitialTemplate(new QName("aggregateSpotBugsXmlFiles"));
 		trans.setDestination(out);
 		trans.transform();
 	}
@@ -101,13 +101,16 @@ public class SpotBugsService {
 	}
 
 	private List<XdmNode> createXdmNodes(List<File> spotBugsFiles, DocumentBuilder documentBuilder) {
-		return spotBugsFiles.stream().map(t -> {
-			try {
-				return documentBuilder.build(t);
-			} catch (SaxonApiException e) {
-				LOG.error(e.getMessage(), e);
-			}
-			return null;
-		}).collect(Collectors.toList());
+		return spotBugsFiles.stream().map(file -> getXdmNodeFromFile(file, documentBuilder))
+				.filter(XdmNode.class::isInstance).collect(Collectors.toList());
+	}
+
+	private XdmNode getXdmNodeFromFile(File file, DocumentBuilder documentBuilder) {
+		try {
+			return documentBuilder.build(file);
+		} catch (SaxonApiException e) {
+			LOG.error(e.getMessage(), e);
+		}
+		return null;
 	}
 }

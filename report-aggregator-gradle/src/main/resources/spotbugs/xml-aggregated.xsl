@@ -7,7 +7,7 @@
 
 	<xsl:param name="xmlFiles" />
 
-	<xsl:template name="test">
+	<xsl:template name="aggregateSpotBugsXmlFiles">
 		<AggregatedSpotBugs timestamp="{current-dateTime()}"
 			spotbugsFilesCount="{count($xmlFiles)}">
 			<xsl:for-each select="$xmlFiles">
