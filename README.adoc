@@ -18,8 +18,8 @@ plugins {
 
 Adding this Gradle plug-in adds two new tasks to your build file:
 
-* generateMergedReport
-* mergeSpotBugsFiles
+* mergeSpotBugsFiles - just generates a SpotBugsMerged.xml of all _spotbugsXml.xml_ files in build directories of the project (target for Maven, build for Gradle)
+* generateMergedReport - Generates a _SpotBugsMerged.xml_ file, if not already present, and uses it to create a _SpotBugsMerged.html_ HTML report.
 
 image::img/tasks.png[]
 
