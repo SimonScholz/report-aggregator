@@ -30,10 +30,10 @@ public class SpotBugsService {
 	private static final Logger LOG = LoggerFactory.getLogger(SpotBugsService.class);
 
 	public List<File> getSpotBugsFiles(File rootDir, int level) {
-		List<File> list = new ArrayList<>(50);
-		findDirectories(rootDir, list, level);
+		List<File> directories = new ArrayList<>(50);
+		findDirectories(rootDir, directories, level);
 
-		List<File> spotBugsFiles = list.stream().map(f -> new File(f, "target/spotbugsXml.xml")).filter(File::exists)
+		List<File> spotBugsFiles = directories.stream().map(f -> new File(f, "spotbugsXml.xml")).filter(File::exists)
 				.collect(Collectors.toList());
 
 		return spotBugsFiles;
