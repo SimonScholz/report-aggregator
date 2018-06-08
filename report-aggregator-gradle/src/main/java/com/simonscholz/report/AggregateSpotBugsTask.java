@@ -11,7 +11,7 @@ import com.simonscholz.report.service.SpotBugsService;
 
 import net.sf.saxon.s9api.SaxonApiException;
 
-public class MergeSpotBugsTask extends DefaultTask {
+public class AggregateSpotBugsTask extends DefaultTask {
 
 	private SpotBugsService spotBugsService;
 
@@ -21,7 +21,7 @@ public class MergeSpotBugsTask extends DefaultTask {
 
 	private int level;
 
-	public MergeSpotBugsTask() {
+	public AggregateSpotBugsTask() {
 		spotBugsService = new SpotBugsService();
 	}
 

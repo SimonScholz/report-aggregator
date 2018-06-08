@@ -7,7 +7,7 @@ public class AnalysisPlugin implements Plugin<Project> {
 
 	@Override
 	public void apply(Project project) {
-		MergeSpotBugsTask aggregateSpotBugsFilesTask = project.getTasks().create("aggregateSpotBugsFiles", MergeSpotBugsTask.class, t -> {
+		AggregateSpotBugsTask aggregateSpotBugsFilesTask = project.getTasks().create("aggregateSpotBugsFiles", AggregateSpotBugsTask.class, t -> {
 			t.setRootDir(project.getRootDir());
 			t.setOutputFile(project.getRootDir());
 			t.setLevel(2);
