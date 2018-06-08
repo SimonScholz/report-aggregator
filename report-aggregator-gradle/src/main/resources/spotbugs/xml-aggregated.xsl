@@ -8,12 +8,11 @@
 	<xsl:param name="xmlFiles" />
 
 	<xsl:template name="test">
-		<!-- TODO count xml files and add timestamp -->
-		<MergedSpotBugs timestamp="TODO"
-			spotbugsFilesCount="TODO">
+		<AggregatedSpotBugs timestamp="{current-dateTime()}"
+			spotbugsFilesCount="{count($xmlFiles)}">
 			<xsl:for-each select="$xmlFiles">
 				<xsl:copy-of select="/" />
 			</xsl:for-each>
-		</MergedSpotBugs>
+		</AggregatedSpotBugs>
 	</xsl:template>
 </xsl:stylesheet>

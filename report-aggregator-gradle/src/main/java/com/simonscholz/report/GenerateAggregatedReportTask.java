@@ -11,7 +11,7 @@ import com.simonscholz.report.service.SpotBugsService;
 
 import net.sf.saxon.s9api.SaxonApiException;
 
-public class GenerateMergedReportTask extends DefaultTask {
+public class GenerateAggregatedReportTask extends DefaultTask {
 	private SpotBugsService spotBugsService;
 
 	private File rootDir;
@@ -20,14 +20,14 @@ public class GenerateMergedReportTask extends DefaultTask {
 
 	private int level;
 
-	public GenerateMergedReportTask() {
+	public GenerateAggregatedReportTask() {
 		spotBugsService = new SpotBugsService();
 	}
 
 	@TaskAction
-	public void mergeSpotBugsFiles() throws FileNotFoundException, IOException, SaxonApiException {
-		spotBugsService.generateMergedReport(rootDir, level, outputFile);
-		getProject().getLogger().info("Generated merged SpotBugs html report: " + outputFile);
+	public void aggregateSpotBugsFiles() throws FileNotFoundException, IOException, SaxonApiException {
+		spotBugsService.generateAggregatedReport(rootDir, level, outputFile);
+		getProject().getLogger().info("Generated Aggregated SpotBugs html report: " + outputFile);
 	}
 
 	public File getRootDir() {

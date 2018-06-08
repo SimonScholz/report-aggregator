@@ -26,9 +26,9 @@ public class MergeSpotBugsTask extends DefaultTask {
 	}
 
 	@TaskAction
-	public void mergeSpotBugsFiles() throws FileNotFoundException, IOException, SaxonApiException {
-		spotBugsService.mergeSpotBugsFiles(rootDir, level, outputFile);
-		getProject().getLogger().info("Wrote merged SpotBugs xml files to " + outputFile);
+	public void aggregateSpotBugsFiles() throws FileNotFoundException, IOException, SaxonApiException {
+		spotBugsService.aggregateSpotBugsFiles(rootDir, level, outputFile);
+		getProject().getLogger().info("Wrote Aggregated SpotBugs xml files to " + outputFile);
 	}
 
 	public File getRootDir() {

@@ -39,16 +39,16 @@ public class SpotBugsService {
 		return spotBugsFiles;
 	}
 
-	public void mergeSpotBugsFiles(File rootDir, int level, File outputDir)
+	public void aggregateSpotBugsFiles(File rootDir, int level, File outputDir)
 			throws FileNotFoundException, IOException, SaxonApiException {
 		List<File> spotBugsFiles = getSpotBugsFiles(rootDir, level);
 
 		Processor proc = new Processor(false);
 		XsltCompiler comp = proc.newXsltCompiler();
 
-		InputStream xsl = getClass().getClassLoader().getResourceAsStream("spotbugs/merge.xsl");
+		InputStream xsl = getClass().getClassLoader().getResourceAsStream("spotbugs/xml-aggregated.xsl");
 		XsltExecutable exp = comp.compile(new StreamSource(xsl));
-		Serializer out = proc.newSerializer(new File(outputDir, "SpotBugsMerged.xml"));
+		Serializer out = proc.newSerializer(new File(outputDir, "SpotBugsAggregated.xml"));
 		out.setOutputProperty(Serializer.Property.METHOD, "xml");
 		out.setOutputProperty(Serializer.Property.INDENT, "yes");
 		XsltTransformer trans = exp.load();
@@ -62,26 +62,26 @@ public class SpotBugsService {
 		trans.transform();
 	}
 
-	public void generateMergedReport(File rootDir, int level, File outputDir)
+	public void generateAggregatedReport(File rootDir, int level, File outputDir)
 			throws FileNotFoundException, IOException, SaxonApiException {
-		File spotBugsMergedXmlFile = new File(outputDir, "SpotBugsMerged.xml");
+		File spotBugsAggregatedXmlFile = new File(outputDir, "SpotBugsAggregated.xml");
 
-		// only generate SpotBugsMerged.xml file, if it does not already exist
-		if (!spotBugsMergedXmlFile.exists()) {
-			mergeSpotBugsFiles(rootDir, level, outputDir);
+		// only generate SpotBugsAggregated.xml file, if it does not already exist
+		if (!spotBugsAggregatedXmlFile.exists()) {
+			aggregateSpotBugsFiles(rootDir, level, outputDir);
 		}
 
-		generateMergedHtmlReport(spotBugsMergedXmlFile, outputDir);
+		generateAggregatedHtmlReport(spotBugsAggregatedXmlFile, outputDir);
 	}
 
-	private void generateMergedHtmlReport(File xmlFile, File outputDir) throws SaxonApiException {
+	private void generateAggregatedHtmlReport(File xmlFile, File outputDir) throws SaxonApiException {
 		Processor proc = new Processor(false);
 		XsltCompiler comp = proc.newXsltCompiler();
 
-		InputStream xsl = getClass().getClassLoader().getResourceAsStream("spotbugs/html-summary.xsl");
+		InputStream xsl = getClass().getClassLoader().getResourceAsStream("spotbugs/html-aggregated.xsl");
 		XsltExecutable exp = comp.compile(new StreamSource(xsl));
 		XdmNode source = proc.newDocumentBuilder().build(new StreamSource(xmlFile));
-		Serializer out = proc.newSerializer(new File(outputDir, "SpotBugsMerged.html"));
+		Serializer out = proc.newSerializer(new File(outputDir, "SpotBugsAggregated.html"));
 		out.setOutputProperty(Serializer.Property.METHOD, "html");
 		out.setOutputProperty(Serializer.Property.INDENT, "yes");
 		XsltTransformer trans = exp.load();

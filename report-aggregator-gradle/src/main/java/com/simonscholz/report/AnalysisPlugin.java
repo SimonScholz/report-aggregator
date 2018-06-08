@@ -7,20 +7,20 @@ public class AnalysisPlugin implements Plugin<Project> {
 
 	@Override
 	public void apply(Project project) {
-		MergeSpotBugsTask mergeSpotBugsTask = project.getTasks().create("mergeSpotBugsFiles", MergeSpotBugsTask.class, t -> {
+		MergeSpotBugsTask aggregateSpotBugsFilesTask = project.getTasks().create("aggregateSpotBugsFiles", MergeSpotBugsTask.class, t -> {
 			t.setRootDir(project.getRootDir());
 			t.setOutputFile(project.getRootDir());
 			t.setLevel(2);
 		});
-		mergeSpotBugsTask.setGroup("SpotBugs");
-		mergeSpotBugsTask.setDescription("Merges all SpotBugs xml files into one SpotBugsMerged.xml file");
+		aggregateSpotBugsFilesTask.setGroup("SpotBugs");
+		aggregateSpotBugsFilesTask.setDescription("Aggregates all SpotBugs xml files into one SpotBugsAggregated.xml file");
 		
-		GenerateMergedReportTask generateMergedReportTask = project.getTasks().create("generateMergedReport", GenerateMergedReportTask.class, t -> {
+		GenerateAggregatedReportTask generateAggregatedReportTask = project.getTasks().create("generateAggregatedReport", GenerateAggregatedReportTask.class, t -> {
 			t.setRootDir(project.getRootDir());
 			t.setOutputFile(project.getRootDir());
 			t.setLevel(2);
 		});
-		generateMergedReportTask.setGroup("SpotBugs");
-		generateMergedReportTask.setDescription("Generate HTML report from merged SpotBugs xml files");
+		generateAggregatedReportTask.setGroup("SpotBugs");
+		generateAggregatedReportTask.setDescription("Generate HTML report from Aggregated SpotBugs xml files");
 	}
 }
